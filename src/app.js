@@ -7,7 +7,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const tweetsRouter = require('./tweets/tweets-router');
-const foldersRouter = require('./folders/folders-router');
+// const foldersRouter = require('./folders/folders-router');
+const retrieveTweetsRouter = require('./tweets/retrieve-tweets');
 
 const app = express();
 
@@ -18,9 +19,9 @@ app.use(cors());
 app.use(helmet());
 
 // what additional stuff??
-
-app.use('/folders', foldersRouter);
-app.use('/tweets', tweetsRouter);
+console.log('i made it here');
+// app.use('/folders', foldersRouter);
+app.use('/tweets/queries', retrieveTweetsRouter);
 
 // app.get('/', (req, res) => {
 //   res.status(200).send('Hello, server and boilerplate!');
