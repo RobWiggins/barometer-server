@@ -8,35 +8,40 @@ const path = require('path'); // need? join posix?
 const tweetsService = require('./tweets-service');
 const xss = require('xss');
 const tweetRetriever = require('./retrieve-tweets');
+const emotionRetriever = require('../emotions/emotion-retriever');
 
 const tweetsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 // change to correct fields
-const serializeTweet = tweet => ({
-  id: tweet.id,
-  title: xss(tweet.title), // where and when to sanitize??
-  modified: tweet.modified,
-  folderId: tweet.folderId,
-  content: xss(tweet.content),
-});
+// const serializeTweet = tweet => ({
+//   id: tweet.id,
+//   title: xss(tweet.title), // where and when to sanitize??
+//   modified: tweet.modified,
+//   folderId: tweet.folderId,
+//   content: xss(tweet.content),
+// });
 
 tweetsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
-  const knexInstance = req.app.get('db');
+  // const knexInstance = req.app.get('db');
   // console.log('i made it to the tweetsRouter GET request');
-  // console.log(req.body);
+  // console.log(req);
   let options = {
     q: req.body.query,
     lang: 'en',
     result_type: 'mixed',
   };
   options = JSON.stringify(options);
+  // console.log(options);
 
-  tweetRetriever.fetchTweets(options)
-    .then( resolvedPromise => {
-      console.log(resolvedPromise);
-      res.status(200).json(resolvedPromise); 
-    });
+  tweetRetriever.tweet_path(options)
+    .then( resolvedPromiseTweetData => {
+      /* send tweets to watson api */
+      // console.log(resolvedPromise);
+      emotionRetriever.fetchEmotions(resolvedPromiseTweetData);
+      // res.status(200).json(resolvedPromiseTweetData);
+    })
+    // .then(resEmotions => console.log(resEmotions));
 
   
   // .then(response => {
