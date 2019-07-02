@@ -4,7 +4,7 @@ require('dotenv').config();
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1');
 
 const emotionRetriever = {
-  fetchEmotions(tweetData) {
+  fetchEmotions(tweetData, query) {
     /* need to pass in query as targets max=2? for data considerations? mb */
 
     let tweetDataJson = JSON.parse(tweetData);
@@ -28,11 +28,8 @@ const emotionRetriever = {
       text: aggregateTweets,
       features: {
         emotion: {
-          // document: false,
-          targets: ['butterflies'],
+          targets: [query],
         },
-        // sentiment: true,
-        // limit: 1,
       },
     };
 

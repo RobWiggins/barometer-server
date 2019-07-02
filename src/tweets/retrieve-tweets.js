@@ -38,8 +38,8 @@ const tweetRetriever = {
 
   //   // let returnedTweets;
   // },
-  tweet_path(options) {
-    let path = 'https://api.twitter.com/1.1/search/tweets.json?q=butterflies';
+  tweet_path(query) {
+    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${query}`;
     let token = process.env.OAUTH_ACCESS_TOKEN; //test user token
     let secret = process.env.OAUTH_ACCESS_TOKEN_SECRET; //test user secret
 

@@ -22,30 +22,29 @@ const jsonBodyParser = express.json();
 //   content: xss(tweet.content),
 // });
 
-tweetsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
+tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
   // const knexInstance = req.app.get('db');
   // console.log('i made it to the tweetsRouter GET request');
   // console.log(req);
   let options = {
-    q: req.body.query,
+    q: req.params.query,
     lang: 'en',
     result_type: 'mixed',
   };
   options = JSON.stringify(options);
-  // console.log(options);
+  console.log(options);
 
-  tweetRetriever
-    .tweet_path(options)
-    .then(resolvedPromiseTweetData => {
+  tweetRetriever.tweet_path(req.params.query).then(resolvedPromiseTweetData => {
     /* send tweets to watson api */
-      emotionRetriever
-        .fetchEmotions(resolvedPromiseTweetData)
-        .then(analysisResults => {
-          console.log(JSON.stringify(analysisResults, null, 2));
-        })
-        .catch(err => {
-          console.log('error:', err);
-        });
+    emotionRetriever
+      .fetchEmotions(resolvedPromiseTweetData, req.params.query)
+      .then(analysisResults => {
+        console.log(JSON.stringify(analysisResults, null, 2));
+        res.status(200).send(JSON.stringify(analysisResults, null, 2));
+      })
+      .catch(err => {
+        console.log('error:', err);
+      });
   });
   // .then(resEmotions => console.log(resEmotions));
 
