@@ -34,16 +34,21 @@ tweetsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
   options = JSON.stringify(options);
   // console.log(options);
 
-  tweetRetriever.tweet_path(options)
-    .then( resolvedPromiseTweetData => {
-      /* send tweets to watson api */
-      // console.log(resolvedPromise);
-      emotionRetriever.fetchEmotions(resolvedPromiseTweetData);
-      // res.status(200).json(resolvedPromiseTweetData);
-    })
-    // .then(resEmotions => console.log(resEmotions));
+  tweetRetriever
+    .tweet_path(options)
+    .then(resolvedPromiseTweetData => {
+    /* send tweets to watson api */
+      emotionRetriever
+        .fetchEmotions(resolvedPromiseTweetData)
+        .then(analysisResults => {
+          console.log(JSON.stringify(analysisResults, null, 2));
+        })
+        .catch(err => {
+          console.log('error:', err);
+        });
+  });
+  // .then(resEmotions => console.log(resEmotions));
 
-  
   // .then(response => {
   //   if (!response.ok) {
   //     throw new Error('An error occured when trying to retrieve the tweets');

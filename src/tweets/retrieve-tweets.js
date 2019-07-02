@@ -61,8 +61,9 @@ const tweetRetriever = {
           console.error(e);
           reject(e);
         } else {
-          returnedTweets = require('util').inspect(data);
-          console.log(returnedTweets);
+          const returnedTweets = data;
+          // returnedTweets = require('util').inspect(data);
+          // console.log(returnedTweets);
           resolve(returnedTweets);
         }
       });
