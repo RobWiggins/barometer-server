@@ -7,7 +7,7 @@ const knex = require('knex');
 const path = require('path'); // need? join posix?
 const tweetsService = require('./tweets-service');
 const xss = require('xss');
-const retrieveTweets = require('./retrieve-tweets');
+const tweetRetriever = require('./retrieve-tweets');
 
 const tweetsRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -32,8 +32,11 @@ tweetsRouter.route('/').get(jsonBodyParser, (req, res, next) => {
   };
   options = JSON.stringify(options);
 
-  retrieveTweets.requestAllTweets(options)
-    .then( data => res.status(200).json(data) )
+  tweetRetriever.fetchTweets(options)
+    .then( resolvedPromise => {
+      console.log(resolvedPromise);
+      res.status(200).json(resolvedPromise); 
+    });
 
   
   // .then(response => {

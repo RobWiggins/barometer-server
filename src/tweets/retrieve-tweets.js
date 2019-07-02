@@ -20,8 +20,8 @@ const OAuth = require('oauth');
 //   content: xss(tweet.content),
 // });
 
-const retrieveTweets = {
-  requestAllTweets(options) {
+const tweetRetriever = {
+  fetchTweets(options) {
     // console.log('i made it to requestAllTweets retrieveTweets module');
 
     /* npm oAuth */
@@ -42,15 +42,16 @@ const retrieveTweets = {
       process.env.OAUTH_ACCESS_TOKEN, //test user token
       process.env.OAUTH_ACCESS_TOKEN_SECRET, //test user secret
       function(e, data, res) {
-        if (e) console.error(e);
+        // if (e) console.error(e);
         returnedTweets = require('util').inspect(data);
-        console.log(returnedTweets);
+        tweetRetriever.returnTweetsToRouter(returnedTweets);
+        // console.log(returnedTweets);
+        /* TODO HOW TO SEND TO TWEETS ROUTER?? WHAT IS DONE()? */
         // console.log(returnedTweets);
         // return returnedTweets;
-        // done();
+        // return res;
+        // return Promise.resolve(returnedTweets);
       });
-
-    
 
     // const jsonOptions = JSON.stringify(options);
 
@@ -74,6 +75,11 @@ const retrieveTweets = {
     //   .then(tweets => res.json(tweets.map(serializeTweet)))
     //   .catch(next);
   },
+  returnTweetsToRouter(tweets) {
+    /* but fetchTweets function itself is not an asynch function so this isnt working */
+    /* pass in this function above??*/
+    return Promise.resolve(tweets);
+  }
 };
 
-module.exports = retrieveTweets;
+module.exports = tweetRetriever;
