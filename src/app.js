@@ -19,9 +19,9 @@ app.use(cors());
 app.use(helmet());
 
 // what additional stuff??
-console.log('i made it here');
+// console.log('i made it here');
 // app.use('/folders', foldersRouter);
-app.use('/tweets/queries', retrieveTweetsRouter);
+app.use('/tweets/queries', tweetsRouter);
 
 // app.get('/', (req, res) => {
 //   res.status(200).send('Hello, server and boilerplate!');

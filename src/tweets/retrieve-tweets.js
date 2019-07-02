@@ -6,9 +6,11 @@ const knex = require('knex');
 const path = require('path'); // need? join posix?
 const tweetsService = require('./tweets-service');
 const xss = require('xss');
+require('dotenv').config();
+const OAuth = require('oauth');
 
-const retrieveTweetsRouter = express.Router();
-const jsonBodyParser = express.json();
+// const retrieveTweetsRouter = express.Router();
+// const jsonBodyParser = express.json();
 
 // const serializeTweet = tweet => ({
 //   id: tweet.id,
@@ -18,44 +20,49 @@ const jsonBodyParser = express.json();
 //   content: xss(tweet.content),
 // });
 
-retrieveTweetsRouter
-  .route('/')
-  .get((req, res, next) => {
-    console.log('i made it to retrieveTweetsRouter GET');
+const retrieveTweets = {
+  requestAllTweets(options) {
+    // console.log('i made it to requestAllTweets retrieveTweets module');
 
     /* npm oAuth */
+    let oauth = new OAuth.OAuth(
+      `https://api.twitter.com/oauth/${process.env.OAUTH_ACCESS_TOKEN}`,
+      `https://api.twitter.com/oauth/${process.env.OAUTH_ACCESS_TOKEN_SECRET}`,
+      `${process.env.OAUTH_CONSUMER_KEY}`,
+      `${process.env.OAUTH_CONSUMER_SECRET_KEY}`,
+      '1.0A',
+      null,
+      'HMAC-SHA1'
+    );
 
-    // CURL
-    //     'authorization: OAuth oauth_consumer_key="consumer-key-for-app",
-    //  oauth_nonce="generated-nonce", oauth_signature="generated-signature",
-    //  oauth_signature_method="HMAC-SHA1", oauth_timestamp="generated-timestamp",
-    //  oauth_token="access-token-for-authed-user", oauth_version="1.0"'
+    let returnedTweets;
 
-    let headers = new Headers({
-      // OAUTH data
-      authorization: `OAuth oauth_consumer_key="aD1EHXT9vnC09slAnXECAAFxh",oauth_token="2949483837-FebnlgUQxbFMKLYTxjsVIwuJT1zIx0buMphWwzV",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1562011341",oauth_nonce="wzgXnfpTTrg",oauth_version="1.0",oauth_signature="CjcN%2FBiNHLIwQ%2BAL8Gl6wo8LlM4%3D"`
-    });
+    oauth.get(
+      'https://api.twitter.com/1.1/search/tweets.json?q=butterflies',
+      process.env.OAUTH_ACCESS_TOKEN, //test user token
+      process.env.OAUTH_ACCESS_TOKEN_SECRET, //test user secret
+      function(e, data, res) {
+        if (e) console.error(e);
+        returnedTweets = require('util').inspect(data);
+        console.log(returnedTweets);
+        // console.log(returnedTweets);
+        // return returnedTweets;
+        // done();
+      });
 
-    /* Temp */
-    const options = {
-      headers,
-      method: 'GET',
-    };
+    
 
-    const jsonOptions = JSON.stringify(options);
+    // const jsonOptions = JSON.stringify(options);
 
-    fetch(
-      'https://api.twitter.com/1.1/search/tweets.json?q=elephants',
-      headers
-    )
-      .then(response => {
-        if (!response.ok) {
-          return 'there was an error during twitter call';
-        }
-        return response.json(); // what to do about res.json(response.json here)
-      })
-      .then(data => res.json(data))
-      .catch(error => console.log(error));
+    // fetch('https://api.twitter.com/1.1/search/tweets.json?q=elephants')
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       return 'there was an error during twitter call';
+    //     }
+    //     return response.json(); // what to do about res.json(response.json here)
+    //   })
+    //   .then(data => json(data))
+    //   .catch(error => console.log(error));
 
     // console.log('i made it here');
     // console.log(req.body.query);
@@ -66,6 +73,7 @@ retrieveTweetsRouter
     // tweetsService.getAlltweets(knexInstance)
     //   .then(tweets => res.json(tweets.map(serializeTweet)))
     //   .catch(next);
-  })
+  },
+};
 
-module.exports = retrieveTweetsRouter;
+module.exports = retrieveTweets;
