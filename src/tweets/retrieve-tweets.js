@@ -39,7 +39,7 @@ const tweetRetriever = {
   //   // let returnedTweets;
   // },
   tweet_path(query) {
-    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${query}`;
+    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${query}&lang=en`;
     let token = process.env.OAUTH_ACCESS_TOKEN; //test user token
     let secret = process.env.OAUTH_ACCESS_TOKEN_SECRET; //test user secret
 
@@ -61,7 +61,7 @@ const tweetRetriever = {
           console.error(e);
           reject(e);
         } else {
-          const returnedTweets = data;
+          const returnedTweets = JSON.parse(data);
           // returnedTweets = require('util').inspect(data);
           // console.log(returnedTweets);
           resolve(returnedTweets);

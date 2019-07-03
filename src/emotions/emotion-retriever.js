@@ -6,40 +6,33 @@ const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-l
 const emotionRetriever = {
   fetchEmotions(tweetData, query) {
     /* need to pass in query as targets max=2? for data considerations? mb */
-
-    let tweetDataJson = JSON.parse(tweetData);
-    let statuses = tweetDataJson.statuses;
-
+    // let tweetDataJson = JSON.parse(tweetData);
+    let statuses = tweetData.statuses;
     const tweetContentArr = [];
     statuses.forEach(status => tweetContentArr.push(status.text));
-
+    console.log(tweetContentArr); // see what array looks like
     /* join tweets together into one paragraph. */
     const aggregateTweets = tweetContentArr.join('. ');
-    console.log(aggregateTweets);
-
+    // console.log(aggregateTweets); // see what paragraph looks like
     const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
       version: '2019-07-01',
       iam_apikey: process.env.API_KEY,
       url: process.env.URL,
     });
-
     /* insert the text of the tweets here */
+    /* TODO FILTER FOR ONLY ENGLISH */
     const analyzeParams = {
       text: aggregateTweets,
       features: {
         emotion: {
           targets: [query],
         },
+        sentiment: {
+          document: true,
+        }
       },
     };
-
     return naturalLanguageUnderstanding.analyze(analyzeParams);
-    // .then(analysisResults => {
-    //   console.log(JSON.stringify(analysisResults, null, 2));
-    // })
-    // .catch(err => {
-    //   console.log('error:', err);
-    // });
   },
 };
 
