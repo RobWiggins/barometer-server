@@ -9,7 +9,7 @@ const emotionRetriever = {
     // let tweetDataJson = JSON.parse(tweetData);
     let statuses = tweetData.statuses;
     const tweetContentArr = [];
-    statuses.forEach(status => tweetContentArr.push(status.text));
+    statuses.forEach(status => tweetContentArr.push(status.full_text));
     console.log(tweetContentArr); // see what array looks like
     /* join tweets together into one paragraph. */
     const aggregateTweets = tweetContentArr.join('. ');

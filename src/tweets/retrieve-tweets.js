@@ -39,7 +39,7 @@ const tweetRetriever = {
   //   // let returnedTweets;
   // },
   tweet_path(query) {
-    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${query}&lang=en`;
+    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${query}&tweet_mode=extended&lang=en`;
     let token = process.env.OAUTH_ACCESS_TOKEN; //test user token
     let secret = process.env.OAUTH_ACCESS_TOKEN_SECRET; //test user secret
 
