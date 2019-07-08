@@ -42,8 +42,10 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
         // ready tweet array to send to front end
         let statuses = resolvedPromiseTweetData.statuses;
         const tweetContentArr = emotionRetriever.getFullTextFromRT(statuses);
+        const duplicatesFiltered = emotionRetriever.filterDuplicateTweets(tweetContentArr);
+        console.log('DUPLICATES FILTERED', duplicatesFiltered);
         console.log(JSON.stringify(analysisResults, null, 2));
-        res.status(200).send({ watsonEmotionResults: analysisResults, tweetContentArr });
+        res.status(200).send({ watsonEmotionResults: analysisResults, duplicatesFiltered });
       })
       .catch(err => {
         console.log('error:', err);

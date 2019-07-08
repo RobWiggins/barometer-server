@@ -32,6 +32,7 @@ const emotionRetriever = {
     });
     /* insert the text of the tweets here */
     /* TODO FILTER FOR ONLY ENGLISH */
+    /* WHAT TO DO ABOUT TARGETS WITH MULTIPLE WORDS */
     const analyzeParams = {
       text: aggregateTweets,
       features: {
@@ -46,7 +47,16 @@ const emotionRetriever = {
     return naturalLanguageUnderstanding.analyze(analyzeParams);
   },
   filterDuplicateTweets(duplicateTweets) {
-    return Array.from(new Set(duplicateTweets));
+
+    const seen = new Set();
+
+    return duplicateTweets.filter(tweet => {
+      const hash = tweet;
+      if (seen.has(hash)) return false;
+
+      seen.add(hash);
+      return true;
+    });
   },
   getFullTextFromRT(statuses) {
     let tweetContentArr = [];
