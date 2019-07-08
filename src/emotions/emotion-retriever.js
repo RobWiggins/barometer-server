@@ -37,7 +37,7 @@ const emotionRetriever = {
       text: aggregateTweets,
       features: {
         emotion: {
-          targets: [query],
+          targets: query.split(' '),
         },
         sentiment: {
           document: true,
