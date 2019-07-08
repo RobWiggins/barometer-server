@@ -41,8 +41,7 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
       .then(analysisResults => {
         // ready tweet array to send to front end
         let statuses = resolvedPromiseTweetData.statuses;
-        const tweetContentArr = [];
-        statuses.forEach(status => tweetContentArr.push(status.full_text));
+        const tweetContentArr = emotionRetriever.getFullTextFromRT(statuses);
         console.log(JSON.stringify(analysisResults, null, 2));
         res.status(200).send({ watsonEmotionResults: analysisResults, tweetContentArr });
       })

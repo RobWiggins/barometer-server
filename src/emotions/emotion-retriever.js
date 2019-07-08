@@ -9,19 +9,21 @@ const emotionRetriever = {
     // let tweetDataJson = JSON.parse(tweetData);
     let statuses = tweetData.statuses;
     // console.log(statuses);
-    const tweetContentArr = [];
-    statuses.forEach(status => tweetContentArr.push(status.full_text));
-    // console.log(tweetContentArr); // see what array looks like
-    /* join tweets together into one paragraph. */
+    // console.log(statuses);
+    // const tweetContentArr = [];
 
+    // full_text for retweets in diff field, if RT collect full text from original retweeted info
+    const tweetContentArr = this.getFullTextFromRT(statuses);
+    console.log(tweetContentArr);
+
+    /* join tweets together into one paragraph for efficient fetch. */
     let uniqueTweetsArr = this.filterDuplicateTweets(tweetContentArr);
-    // This isn't working, just remove RT's
-    uniqueTweetsArr.splice(14);
     // console.log(uniqueTweetsArr);
     const aggregateTweets = uniqueTweetsArr.join('. ');
-    /* TODO CHANGE THIS */ 
-    
-    console.log(aggregateTweets);
+    console.log('SENT IN UNIQUE TWEETS FULL RT TEXT: ', aggregateTweets);
+    /* TODO CHANGE THIS */
+
+    // console.log(aggregateTweets);
     // console.log(aggregateTweets); // see what paragraph looks like
     const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
       version: '2019-07-01',
@@ -38,14 +40,25 @@ const emotionRetriever = {
         },
         sentiment: {
           document: true,
-        }
+        },
       },
     };
     return naturalLanguageUnderstanding.analyze(analyzeParams);
   },
-  filterDuplicateTweets(tweetContentArr) {
-    return Array.from(new Set(tweetContentArr));
+  filterDuplicateTweets(duplicateTweets) {
+    return Array.from(new Set(duplicateTweets));
   },
+  getFullTextFromRT(statuses) {
+    let tweetContentArr = [];
+    statuses.forEach(status => {
+      tweetContentArr.push(
+        status.full_text[0] + status.full_text[1] === 'RT'
+          ? status.retweeted_status.full_text
+          : status.full_text
+      );
+    });
+    return tweetContentArr;
+  }
 };
 
 module.exports = emotionRetriever;
