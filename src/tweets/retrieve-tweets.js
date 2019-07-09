@@ -4,7 +4,7 @@
 const express = require('express');
 const knex = require('knex');
 const path = require('path'); // need? join posix?
-const tweetsService = require('./tweets-service');
+const tweetsService = require('./queries-service');
 const xss = require('xss');
 require('dotenv').config();
 const OAuth = require('oauth');

@@ -5,7 +5,7 @@
 const express = require('express');
 const knex = require('knex');
 const path = require('path'); // need? join posix?
-const tweetsService = require('./tweets-service');
+const queriesService = require('./queries-service');
 const xss = require('xss');
 const tweetRetriever = require('./retrieve-tweets');
 const emotionRetriever = require('../emotions/emotion-retriever');
@@ -42,13 +42,31 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
         // ready tweet array to send to front end
         let statuses = resolvedPromiseTweetData.statuses;
         const tweetContentArr = emotionRetriever.getFullTextFromRT(statuses);
-        const duplicatesFiltered = emotionRetriever.filterDuplicateTweets(tweetContentArr);
-        console.log('DUPLICATES FILTERED', duplicatesFiltered);
+        const duplicatesFiltered = emotionRetriever.filterDuplicateTweets(
+          tweetContentArr
+        );
         console.log(JSON.stringify(analysisResults, null, 2));
-        res.status(200).send({ watsonEmotionResults: analysisResults, duplicatesFiltered });
+        // get queries history and send response
+        queriesService
+          .getAllQueries(req.app.get('db'))
+          .then(queries => {
+            res
+              .status(200)
+              .send({
+                watsonEmotionResults: analysisResults,
+                duplicatesFiltered,
+                queries,
+              });
+          });
+      })
+      .post(jsonBodyParser, (req, res, next) => {
+        queriesService.insertQuery(req.app.get('db'), req.params.query)
+          .then((inserted => {
+            res.status(201).send(inserted); // TODO right thing to send??
+          }));
       })
       .catch(err => {
-        console.log('error:', err);
+        res.status(400).send('something went wrong with request');
       });
   });
   // .then(resEmotions => console.log(resEmotions));
