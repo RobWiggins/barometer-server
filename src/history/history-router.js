@@ -24,8 +24,9 @@ historyRouter
   })
   .post(jsonBodyParser, (req, res, next) => {
     console.log('BODY: ', req.body);
+    const newQuery = {query: req.body.query} ;
     queriesService
-      .insertQuery(req.app.get('db'), req.body.query)
+      .insertQuery(req.app.get('db'), newQuery)
       .then(inserted => {
         res.status(201).send(inserted); // TODO right thing to send??
       })
