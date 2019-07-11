@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1');
+const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
 
 const emotionRetriever = {
   fetchEmotions(tweetData, query) {
