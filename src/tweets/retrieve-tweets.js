@@ -64,9 +64,13 @@ const tweetRetriever = {
           reject(e);
         } else {
           const returnedTweets = JSON.parse(data);
+          if ( returnedTweets.statuses.length === 0 ) {
+            reject('tweets not found');
           // returnedTweets = require('util').inspect(data);
-          // console.log(returnedTweets);
-          resolve(returnedTweets);
+          } else {
+            console.log('THIS IS THE PARSED DATA: ', returnedTweets);
+            resolve(returnedTweets);
+          }
         }
       });
     });
