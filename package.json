@@ -9,7 +9,7 @@
     "start": "node src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
     "migrate-production": "postgrator --config postgrator-production-config.js",
-    "predeploy": "npm audit",
+    "predeploy": "npm audit && npm run migrate-production",
     "deploy": "git push heroku master"
   },
   "repository": {
@@ -29,11 +29,12 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
+    "ibm-watson": "^4.2.1",
     "knex": "^0.18.0",
+    "marked": "^0.7.0",
     "morgan": "^1.9.1",
     "oauth": "^0.9.15",
     "pg": "^7.11.0",
-    "watson-developer-cloud": "^4.0.1",
     "xss": "^1.0.6"
   },
   "devDependencies": {

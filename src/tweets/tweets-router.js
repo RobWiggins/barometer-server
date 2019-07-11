@@ -47,6 +47,11 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
         );
         console.log(JSON.stringify(analysisResults, null, 2));
         // get queries history and send response
+        console.log({
+          watsonEmotionResults: analysisResults,
+          duplicatesFiltered,
+          currentQuery: req.params.query,
+        });
         res.status(200).send({
           watsonEmotionResults: analysisResults,
           duplicatesFiltered,
