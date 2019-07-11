@@ -55,7 +55,8 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
       });
   })
     .catch(err => {
-      res.status(400).send('something went wrong with request');
+      console.error(err);
+      res.status(500).send('something went wrong with request');
     });
 
   // .then(resEmotions => console.log(resEmotions));
