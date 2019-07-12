@@ -4,7 +4,7 @@
 const express = require('express');
 const knex = require('knex');
 const path = require('path'); // need? join posix?
-const tweetsService = require('./queries-service');
+const tweetsService = require('../history/queries-service');
 const xss = require('xss');
 require('dotenv').config();
 const OAuth = require('oauth');
@@ -40,7 +40,7 @@ const tweetRetriever = {
   // },
   tweet_path(query) {
     let encodedQuery = encodeURIComponent(query);
-    console.log(encodedQuery);
+    // console.log(encodedQuery);
     let path = `https://api.twitter.com/1.1/search/tweets.json?q=${encodedQuery}&tweet_mode=extended&count=30&lang=en`;
     let token = process.env.OAUTH_ACCESS_TOKEN; //test user token
     let secret = process.env.OAUTH_ACCESS_TOKEN_SECRET; //test user secret
@@ -68,7 +68,7 @@ const tweetRetriever = {
             reject('tweets not found');
           // returnedTweets = require('util').inspect(data);
           } else {
-            console.log('THIS IS THE PARSED DATA: ', returnedTweets);
+            // console.log('THIS IS THE PARSED DATA: ', returnedTweets);
             resolve(returnedTweets);
           }
         }

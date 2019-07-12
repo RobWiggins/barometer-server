@@ -20,7 +20,7 @@ const emotionRetriever = {
     let uniqueTweetsArr = this.filterDuplicateTweets(tweetContentArr);
     // console.log(uniqueTweetsArr);
     const aggregateTweets = uniqueTweetsArr.join('. ');
-    console.log('SENT IN UNIQUE TWEETS FULL RT TEXT: ', aggregateTweets);
+    // console.log('SENT IN UNIQUE TWEETS FULL RT TEXT: ', aggregateTweets);
     /* TODO CHANGE THIS */
 
     // console.log(aggregateTweets);

@@ -3,7 +3,7 @@
 const express = require('express');
 const knex = require('knex');
 const path = require('path'); // need? join posix?
-const queriesService = require('../tweets/queries-service');
+const queriesService = require('./queries-service');
 const xss = require('xss');
 const tweetRetriever = require('../tweets/retrieve-tweets');
 const emotionRetriever = require('../emotions/emotion-retriever');
@@ -16,14 +16,14 @@ historyRouter
   .route('/')
   .get((req, res, next) => {
     queriesService.getAllQueries(req.app.get('db')).then(queries => {
-      console.log('QUERIES: ', queries);
+      // console.log('QUERIES: ', queries);
       res.status(200).send({
         'queries': queries,
       });
     });
   })
   .post(jsonBodyParser, (req, res, next) => {
-    console.log('BODY: ', req.body);
+    // console.log('BODY: ', req.body);
     const newQuery = {query: req.body.query} ;
     queriesService
       .insertQuery(req.app.get('db'), newQuery)
