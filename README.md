@@ -94,7 +94,7 @@ PROD_MIGRATION_DB_PASS=
 https://calm-badlands-84231.herokuapp.com/
 
 ### Analyze tweets endpoint
-``https://calm-badlands-84231.herokuapp.com/tweets/queries/:query``
+``GET https://calm-badlands-84231.herokuapp.com/tweets/queries/:query``
 
 Returns a list of up to 30 tweets and the tweets' IBM Watson natural language analyzed emotion results on the document \
 and target keyword level.
@@ -151,11 +151,12 @@ Example Response:
 ```
 
 ### Query history endpoint
-``https://calm-badlands-84231.herokuapp.com/queries/history``
+``GET https://calm-badlands-84231.herokuapp.com/queries/history``
 
 Returns the total search query history among all users.
 
 Example response: 
+
 ```javascript
 {
     queries: [ 
@@ -187,6 +188,28 @@ Example response:
     ]
 }
 ```
+
+### Add query to history endpoint
+``POST https://calm-badlands-84231.herokuapp.com/queries/history``
+
+Adds a search query to the total query search history. Returns a 201 status response on successful post.
+
+Pass in options:
+
+```javascript
+const body = JSON.stringify({
+    query: newQuery,
+});
+    
+const options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body,
+};
+    
+fetch(`https://calm-badlands-84231.herokuapp.com/queries/history`, options)
+```
+
 
 ## React Front End
 https://github.com/RobertWiggins/barometer-client
