@@ -9,8 +9,8 @@ describe('Queries/History Endpoints', function() {
 
   const testQueries = [
     { query: 'durant' },
-    { query: 'house fire' }, 
-    { query: 'tigers' } 
+    { query: 'house fire' },
+    { query: 'tigers' },
   ];
 
   before('make knex instance', () => {
@@ -25,69 +25,60 @@ describe('Queries/History Endpoints', function() {
 
   before('cleanup', () => testHelpers.cleanTables(db));
 
-  describe(`GET /queries/history`, () => {
-    context(`Given three past queries, returns the three strings`, () => {
-      
+  describe('GET /queries/history', () => {
+    context('Given three past queries, returns the three strings', () => {
       beforeEach('insert queries into queries table', () => {
         return testQueries.forEach(query => {
-          // console.log(query); 
           testHelpers.seedQueriesTable(db, query);
         });
       });
 
       afterEach('cleanup', () => testHelpers.cleanTables(db));
 
-      it(`responds with 200 and the query list`, () => {
+      it('responds with 200 and the query list', () => {
         supertest(app)
           .get('/queries/history')
           .expect(200)
           .expect(res => {
-            // console.log('THE RESPONSE: ', res);
-            console.log(res);
-            expect(res.body.queries.length).to.eql(3)
-            expect(res.body.queries[0].query).to.eql('durant')
-            expect(res.body.queries[2].query).to.eql('tigers')
-            // expect(res.body.queries)
+            expect(res.body.queries.length).to.eql(3);
+            expect(res.body.queries[0].query).to.eql('durant');
+            expect(res.body.queries[2].query).to.eql('tigers');
           });
       });
     });
   });
 
-
-  describe(`POST /queries/history`, () => {
-    context(`Given three past queries, posting a query adds it to history`, () => {
-      
-      beforeEach('insert queries into queries table', () => {
-        return testQueries.forEach(query => {
-          // console.log(query); 
-          testHelpers.seedQueriesTable(db, query);
+  describe('POST /queries/history', () => {
+    context(
+      'Given three past queries, posting a query adds it to history',
+      () => {
+        beforeEach('insert queries into queries table', () => {
+          return testQueries.forEach(query => {
+            testHelpers.seedQueriesTable(db, query);
+          });
         });
-      });
 
-      afterEach('cleanup', () => testHelpers.cleanTables(db));
+        afterEach('cleanup', () => testHelpers.cleanTables(db));
 
-      const body = JSON.stringify({
-        query: 'eagles',
-      });
-      const options = {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body,
-      };
+        const body = JSON.stringify({
+          query: 'eagles',
+        });
+        const options = {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body,
+        };
 
-      it(`responds with 201 and the query list`, () => {
-        supertest(app)
-          .post('/queries/history', options)
-          .expect(201)
-          .expect(res => {
-            // console.log('THE RESPONSE: ', res);
-            // console.log('THE QUERIES RESPONSE BODY: ', res.body);
-            expect(testHelpers.getAllQueries(db)).to.eql(4);
-            expect(res.body.queries[3].query).to.eql('eagles');
-            // expect(res.body.queries)
-          });
-      });
-    });
+        it('responds with 201 and the query list', () => {
+          supertest(app)
+            .post('/queries/history', options)
+            .expect(201)
+            .expect(res => {
+              expect(testHelpers.getAllQueries(db)).to.eql(4);
+              expect(res.body.queries[3].query).to.eql('eagles');
+            });
+        });
+      }
+    );
   });
-
 });

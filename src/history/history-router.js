@@ -1,12 +1,7 @@
 'use strict';
 
 const express = require('express');
-const knex = require('knex');
-const path = require('path');
 const queriesService = require('./queries-service');
-const xss = require('xss');
-const tweetRetriever = require('../tweets/retrieve-tweets');
-const emotionRetriever = require('../emotions/emotion-retriever');
 
 const historyRouter = express.Router();
 const jsonBodyParser = express.json();

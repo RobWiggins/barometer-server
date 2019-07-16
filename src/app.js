@@ -8,8 +8,6 @@ const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const tweetsRouter = require('./tweets/tweets-router');
 const historyRouter = require('./history/history-router');
-// const foldersRouter = require('./folders/folders-router');
-// const retrieveTweetsRouter = require('./tweets/retrieve-tweets');
 
 const app = express();
 

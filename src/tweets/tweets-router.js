@@ -8,12 +8,6 @@ const tweetsRouter = express.Router();
 const jsonBodyParser = express.json();
 
 tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
-  let options = {
-    q: req.params.query,
-    lang: 'en',
-    result_type: 'mixed',
-  };
-  options = JSON.stringify(options);
 
   tweetRetriever.tweet_path(req.params.query).then(resolvedPromiseTweetData => {
     /* send tweets to watson api */

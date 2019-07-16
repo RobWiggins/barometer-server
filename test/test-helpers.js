@@ -2,7 +2,7 @@
 
 const testHelpers = {
   cleanTables: function cleanTables(db) {
-    return db.raw(`TRUNCATE queries`);
+    return db.raw('TRUNCATE queries');
   },
   seedQueriesTable: function seedQueriesTable(db, query) {
     return db

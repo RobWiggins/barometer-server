@@ -1,11 +1,5 @@
-/* TODO RERIG UP TO ADJUST FOR TWEETS */
 'use strict';
 
-const express = require('express');
-const knex = require('knex');
-const path = require('path');
-const tweetsService = require('../history/queries-service');
-const xss = require('xss');
 require('dotenv').config();
 const OAuth = require('oauth');
 
@@ -26,8 +20,6 @@ const tweetRetriever = {
       null,
       'HMAC-SHA1'
     );
-
-    let returnedTweets;
 
     return new Promise(function(resolve, reject) {
       oauth.get(path, token, secret, function(e, data, res) {
