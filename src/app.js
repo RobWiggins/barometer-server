@@ -19,15 +19,8 @@ app.use(morgan(morganOption));
 app.use(cors());
 app.use(helmet());
 
-// what additional stuff??
-// console.log('i made it here');
-// app.use('/folders', foldersRouter);
 app.use('/tweets/queries', tweetsRouter);
 app.use('/queries/history', historyRouter);
-
-// app.get('/', (req, res) => {
-//   res.status(200).send('Hello, server and boilerplate!');
-// });
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
