@@ -90,13 +90,4 @@ describe('Queries/History Endpoints', function() {
     });
   });
 
-  // context('Given there are articles in the database', () => {
-  //   beforeEach('insert articles', () =>
-  //     helpers.seedArticlesTables(
-  //       db,
-  //       testUsers,
-  //       testArticles,
-  //       testComments,
-  //     )
-  //   )
 });

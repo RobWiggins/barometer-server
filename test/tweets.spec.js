@@ -8,7 +8,6 @@ describe('Testing tweetsRouter - tweet and watson API emotion calls', () => {
       .get('/tweets/queries/dogs')
       .expect(200)
       .expect(res => {
-        // console.log(res);
         expect(res.body.currentQuery).to.eql('dogs');
         expect(res.body.duplicatesFiltered.length > 1).to.eql(true);
         expect(typeof res.body.duplicatesFiltered[0]).to.eql('string');
