@@ -39,8 +39,8 @@ Complete the following steps to get the server running.
 
 ## Set up local database
 
-Create new database titled barometer
-Create new table 'queries', or just enter `npm run migrate` at the terminal
+Create a new database titled barometer. \
+Create new table 'queries', or enter `npm run migrate` in the terminal while inside the project directory.
 
 ```SQL
 CREATE TABLE IF NOT EXISTS queries (
