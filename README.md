@@ -18,8 +18,6 @@ users. The application is effectively a user-driven online social perception sur
 
 ![Search query with tweet results and emotion charts](https://github.com/RobertWiggins/barometer-client/blob/master/public/static/search_home.png)
 
-![Both emotion and sentiment charts](https://github.com/RobertWiggins/barometer-client/blob/master/public/static/sentiment_charts.png)
-
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and
 testing purposes. See deployment for notes on how to deploy the project on a live system. This server runs locally
