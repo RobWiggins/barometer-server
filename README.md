@@ -14,7 +14,7 @@ Use cases may include gathering research that will inform corporate messaging st
 consumer decide whether to attend a certain event, or indexing a user's feelings against the rest of other Twitter
 users. The application is effectively a user-driven online social perception survey.
 
-### Live Demo: https://robs-barometer.now.sh/
+### Live Demo: https://barometerapp.now.sh/
 
 ![Search query with tweet results and emotion charts](https://github.com/RobertWiggins/barometer-client/blob/master/public/static/search_home.png)
 
