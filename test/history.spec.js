@@ -28,21 +28,21 @@ describe('Queries/History Endpoints', function() {
   describe('GET /queries/history', () => {
     context('Given three past queries, returns the three strings', () => {
       beforeEach('insert queries into queries table', () => {
-        return testQueries.forEach(query => {
-          testHelpers.seedQueriesTable(db, query);
-        });
+        return Promise.all(testQueries.map(query => 
+          testHelpers.seedQueriesTable(db, query)
+        ));
       });
 
       afterEach('cleanup', () => testHelpers.cleanTables(db));
 
       it('responds with 200 and the query list', () => {
-        supertest(app)
+        return supertest(app)
           .get('/queries/history')
           .expect(200)
           .expect(res => {
-            expect(res.body.queries.length).to.eql(3);
-            expect(res.body.queries[0].query).to.eql('durant');
-            expect(res.body.queries[2].query).to.eql('tigers');
+            expect(res.body.queries.length).to.equal(3);
+            expect(res.body.queries[0].query).to.equal('durant');
+            expect(res.body.queries[2].query).to.equal('tigers');
           });
       });
     });
