@@ -13,17 +13,16 @@ const app = express();
 
 const morganOption = NODE_ENV === 'production' ? 'tiny' : 'dev';
 
-const corsOptions = {
-  origin: 'https://barometerapp.vercel.app',
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) will choke on 204
-}
-
 app.use(morgan(morganOption));
-app.use(cors(corsOptions));
 app.use(helmet());
 
-app.use('/tweets/queries', cors(corsOptions), tweetsRouter);
-app.use('/queries/history', cors(corsOptions), historyRouter);
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+app.use('/tweets/queries', tweetsRouter);
+app.use('/queries/history', historyRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
