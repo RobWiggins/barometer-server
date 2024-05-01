@@ -35,13 +35,13 @@
     "morgan": "^1.10.0",
     "oauth": "^0.10.0",
     "pg": "^8.11.5",
+    "postgrator-cli": "^7.0.0",
     "xss": "^1.0.15"
   },
   "devDependencies": {
     "chai": "^5.1.0",
     "mocha": "^10.4.0",
     "nodemon": "^3.1.0",
-    "postgrator-cli": "^7.0.0",
     "supertest": "^7.0.0"
   }
 }
