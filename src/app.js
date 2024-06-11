@@ -17,7 +17,8 @@ app.use(morgan(morganOption));
 app.use(helmet());
 // app.use(cors())
 const corsOptions = {
-  origin: '*'
+  origin: '*',
+  allowedHeaders: ['Content-Type', 'Authorization']
 }
 // app.options({ origin: '*'}, cors())
 app.use(cors(corsOptions))
