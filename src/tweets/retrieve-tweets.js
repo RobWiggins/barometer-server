@@ -1,40 +1,46 @@
 'use strict';
 
 require('dotenv').config();
-const OAuth = require('oauth');
 
 const tweetRetriever = {
+  async tweet_path(query) {
+    const BEARER_TOKEN = process.env.X_BEARER_TOKEN;
 
-  tweet_path(query) {
-    let encodedQuery = encodeURIComponent(query);
-    let path = `https://api.twitter.com/1.1/search/tweets.json?q=${encodedQuery}&tweet_mode=extended&count=30&lang=en`;
-    let token = process.env.OAUTH_ACCESS_TOKEN; 
-    let secret = process.env.OAUTH_ACCESS_TOKEN_SECRET; 
+    if (!BEARER_TOKEN) {
+      throw new Error('Missing X_BEARER_TOKEN');
+    }
 
-    let oauth = new OAuth.OAuth(
-      `https://api.twitter.com/oauth/${process.env.OAUTH_ACCESS_TOKEN}`,
-      `https://api.twitter.com/oauth/${process.env.OAUTH_ACCESS_TOKEN_SECRET}`,
-      `${process.env.OAUTH_CONSUMER_KEY}`,
-      `${process.env.OAUTH_CONSUMER_SECRET_KEY}`,
-      '1.0A',
-      null,
-      'HMAC-SHA1'
+    const encodedQuery = encodeURIComponent(query);
+    const params = new URLSearchParams({
+      query: encodedQuery,
+      max_results: '30',
+    });
+
+    const response = await fetch(
+      `https://api.x.com/2/tweets/search/recent?${params.toString()}`,
+      {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${BEARER_TOKEN}`,
+        },
+      }
     );
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`X API error ${response.status}: ${errorText}`);
+    }
+
+    const resJson = await response.json()
+    const returnedPosts = resJson.data.map(post => post.text);
+
     return new Promise(function(resolve, reject) {
-      oauth.get(path, token, secret, function(e, data, res) {
-        if (e) {
-          console.error(e);
-          reject(e);
+        if (returnedPosts.length === 0) {
+          reject('No posts found');
         } else {
-          const returnedTweets = JSON.parse(data);
-          if ( returnedTweets.statuses.length === 0 ) {
-            reject('tweets not found');
-          } else {
-            resolve(returnedTweets);
-          }
+          resolve(returnedPosts);
         }
-      });
     });
   },
 };

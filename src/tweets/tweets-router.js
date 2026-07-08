@@ -11,14 +11,18 @@ tweetsRouter.route('/:query').get(jsonBodyParser, (req, res, next) => {
 
   tweetRetriever.tweet_path(req.params.query).then(resolvedPromiseTweetData => {
     /* send tweets to watson api */
+    console.log('resolvedPromiseTweetData', resolvedPromiseTweetData);
     emotionRetriever
       .fetchEmotions(resolvedPromiseTweetData, req.params.query)
       .then(analysisResults => {
         // ready tweet array to send to front end
-        let statuses = resolvedPromiseTweetData.statuses;
-        const tweetContentArr = emotionRetriever.getFullTextFromRT(statuses);
-        const duplicatesFiltered = emotionRetriever.filterDuplicateTweets(
-          tweetContentArr
+        console.log('analysisResults', analysisResults);
+        // let statuses = resolvedPromiseTweetData.statuses;
+        // console.log('statuses', statuses);
+        // const postContentArr = emotionRetriever.getFullTextFromRT(resolvedPromiseTweetData);
+        // TODO do this before sending to watson?? probably.
+        const duplicatesFiltered = emotionRetriever.filterDuplicatePosts(
+          resolvedPromiseTweetData
         );
         res.status(200).send({
           watsonEmotionResults: analysisResults,

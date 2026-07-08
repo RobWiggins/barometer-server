@@ -2,22 +2,24 @@
 
 require('dotenv').config();
 const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
+const { IamAuthenticator } = require('ibm-watson/auth');
 
 const emotionRetriever = {
-  fetchEmotions(tweetData, query) {
-    let statuses = tweetData.statuses;
-    const tweetContentArr = this.getFullTextFromRT(statuses);
+  fetchEmotions(posts, query) {
+    // let posts = postsData.data.map(post => post.text);
 
     /* join tweets together into one paragraph for efficient fetch. */
-    let uniqueTweetsArr = this.filterDuplicateTweets(tweetContentArr);
-    const aggregateTweets = uniqueTweetsArr.join('. ');
+    let uniquePosts = this.filterDuplicatePosts(posts);
+    const aggregratePosts = uniquePosts.join('. ');
     const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
-      version: '2019-07-01',
-      iam_apikey: process.env.API_KEY,
-      url: process.env.URL,
+      version: '2022-04-07',
+      authenticator: new IamAuthenticator({
+        apikey: process.env.API_KEY
+      }),
+      serviceUrl: process.env.URL,
     });
     const analyzeParams = {
-      text: aggregateTweets,
+      text: aggregratePosts,
       features: {
         emotion: {
           targets: query.split(' '),
@@ -29,25 +31,25 @@ const emotionRetriever = {
     };
     return naturalLanguageUnderstanding.analyze(analyzeParams);
   },
-  filterDuplicateTweets(duplicateTweets) {
+  filterDuplicatePosts(duplicatePosts) {
 
     const seen = new Set();
 
-    return duplicateTweets.filter(tweet => {
-      const hash = tweet;
+    return duplicatePosts.filter(post => {
+      const hash = post;
       if (seen.has(hash)) return false;
 
       seen.add(hash);
       return true;
     });
   },
-  getFullTextFromRT(statuses) {
+  getFullTextFromRT(posts) {
     let tweetContentArr = [];
-    statuses.forEach(status => {
+    posts.forEach(post => {
       tweetContentArr.push(
-        status.full_text[0] + status.full_text[1] === 'RT'
-          ? status.retweeted_status.full_text
-          : status.full_text
+        post.text[0] + post.text[1] === 'RT'
+          ? post.retweeted_post.full_text
+          : post.full_text
       );
     });
     return tweetContentArr;
