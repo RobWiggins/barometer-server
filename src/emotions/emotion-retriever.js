@@ -12,6 +12,7 @@ const emotionRetriever = {
     let uniquePosts = this.filterDuplicatePosts(posts);
     const aggregratePosts = uniquePosts.join('. ');
     const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
+      language: 'en',
       version: '2022-04-07',
       authenticator: new IamAuthenticator({
         apikey: process.env.API_KEY
@@ -19,6 +20,7 @@ const emotionRetriever = {
       serviceUrl: process.env.URL,
     });
     const analyzeParams = {
+      language: 'en',
       text: aggregratePosts,
       features: {
         emotion: {
